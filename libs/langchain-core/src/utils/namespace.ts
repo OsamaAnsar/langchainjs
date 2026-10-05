@@ -8,8 +8,11 @@ type Constructor = abstract new (...args: any[]) => any;
 /**
  * The return type of `Namespace.brand()`: the original base class
  * intersected with a polymorphic `isInstance` type guard.
+ *
+ * Exported so that packages declaring `class X extends ns.brand(Base)` can
+ * emit declarations that name it.
  */
-type BrandedClass<TBase extends Constructor> = TBase & {
+export type BrandedClass<TBase extends Constructor> = TBase & {
   isInstance: IsInstanceFn;
 };
 
@@ -20,7 +23,7 @@ type BrandedClass<TBase extends Constructor> = TBase & {
  * At call sites TypeScript infers `T` from the class, so
  * `StandardError.isInstance(obj)` narrows `obj` to `StandardError`.
  */
-type IsInstanceFn = <T extends Constructor>(
+export type IsInstanceFn = <T extends Constructor>(
   this: T,
   obj: unknown
 ) => obj is InstanceType<T>;
